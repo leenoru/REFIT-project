@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ClosetMapper">
+    <select id="getListByID" resultType="ClosetDto">
+        SELECT * FROM closet WHERE ID = #{id}
+    </select>
+
+
+<!--    <insert id="Closet_save" parameterType="ClosetDto">-->
+<!--        INSERT INTO closet (CLOSET_ID, CLOTH_PATH, ID, CLOTH_CATEGORY, CLOTH_SUBCATEGORY)-->
+<!--        VALUES-->
+<!--        (#{closet_id}-->
+<!--        ,#{cloth_path}-->
+<!--        ,#{id}-->
+<!--        ,#{cloth_category}-->
+<!--        ,#{cloth_subcategory}-->
+<!--        )-->
+<!--    </insert>-->
+
+    <insert id="Closet_save" parameterType="ClosetDto">
+        INSERT INTO closet (CLOSET_ID, CLOTH_PATH, CLOTH_CATEGORY, CLOTH_SUBCATEGORY)
+        VALUES
+        (#{closet_id}
+        ,#{cloth_path}
+        ,#{cloth_category}
+        ,#{cloth_subcategory}
+        )
+    </insert>
+
+    <update id ="Closet_update" parameterType="ClosetDto">
+        update closet
+        set cloth_path = #{cloth_path}
+        ,cloth_category = #{cloth_category}
+        ,cloth_subcategory = #{cloth_subcategory}
+        where closet_id = #{closet_id}
+    </update>
+
+    <delete id="Closet_delete" parameterType="Long">
+        delete from closet
+        where closet_id= #{closet_id}
+    </delete>
+</mapper>

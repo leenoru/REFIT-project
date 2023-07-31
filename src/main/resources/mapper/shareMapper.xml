@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Board">
+
+    <select id="Board_GetMainList" resultType="BoardDto">
+        SELECT id, title, content, created_at, unix_created_at, region, imageText
+        FROM board
+        ORDER BY created_at DESC
+        LIMIT 8
+    </select>
+
+    <select id="Board_GetList" parameterType="java.util.HashMap" resultType="BoardDto">
+        SELECT id, title, content, created_at, unix_created_at, region, imageText
+        FROM board
+        ORDER BY created_at DESC
+        limit #{start}, #{limit}
+    </select>
+
+    <select id="Board_GetSearchedList" parameterType="BoardDto" resultType="BoardDto">
+        SELECT id, title, content, created_at, unix_created_at, region, imageText
+        FROM board
+        WHERE title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY created_at DESC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="Board_GetSearchedListAll" parameterType="String" resultType="BoardDto">
+        SELECT id, title, content, created_at, unix_created_at, region, imageText
+        FROM board
+        WHERE title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY created_at DESC
+    </select>
+
+
+    <select id="Board_boardCount" resultType="Integer">
+        SELECT count(id) from board
+    </select>
+
+
+    <insert id="Board_save" parameterType="BoardDto">
+        insert into board
+        (
+        title
+        ,content
+        ,created_at
+        ,unix_created_at
+        ,author_id
+        ,region
+        ,nickname
+        ,imageText
+        ,originalContent
+        )
+        select
+        #{title}
+        ,#{content}
+        ,now()
+        ,#{unix_created_at}
+        ,#{author_id}
+        ,#{region}
+        ,m.nickname
+        ,#{imageText}
+        ,#{originalContent}
+        from member m
+        where m.id = #{author_id}
+    </insert>
+
+
+    <update id ="Board_update" parameterType="BoardDto">
+        update board
+        set title = #{title}
+        ,region = #{region}
+        ,content = #{content}
+        ,imageText = #{imageText}
+        ,originalContent = #{originalContent}
+        where id = #{id}
+    </update>
+
+    <delete id="Board_delete" parameterType="Long">
+        delete from board
+        where id= #{id}
+    </delete>
+
+    <select id="Board_getView" parameterType="Long" resultType="BoardDto">
+        SELECT id, title, content, created_at, unix_created_at, author_id, region, nickname, imageText, originalContent
+        FROM board
+        where id=#{id}
+    </select>
+
+    <select id="Comment_getList" parameterType="Long" resultType="CommentDto">
+        SELECT id, post_id, comment, author, created_at, updated_at, comment_author_id, nickname, unix_created_at,
+        (SELECT COUNT(*) FROM comment WHERE post_Id = #{postId}) AS countAll
+        FROM comment
+        WHERE post_Id = #{postId}
+    </select>
+
+    <insert id="Comment_save" parameterType="CommentDto">
+        <selectKey keyProperty="comment_author_id" resultType="int" order="AFTER">
+            select id from member where id = #{comment_author_id}
+        </selectKey>
+        insert into comment
+        (
+        post_id
+        ,comment
+        ,author
+        ,created_at
+        ,unix_created_at
+        ,comment_author_id
+        ,nickname
+        )
+        values
+        (
+        #{postId}
+        ,#{comment}
+        ,#{author}
+        ,now()
+        ,#{unix_created_at}
+        ,#{comment_author_id}
+        ,<choose>
+        <when test="comment_author_id != null">
+            (select nickname from member where id = #{comment_author_id})
+        </when>
+        <otherwise>null</otherwise>
+    </choose>
+        )
+    </insert>
+
+
+    <select id="Comment_getView" parameterType="Long" resultType="CommentDto">
+        SELECT id, post_id, comment, author, created_at, updated_at, comment_author_id, nickname
+        FROM comment
+        where id=#{id}
+    </select>
+
+    <update id ="Comment_update" parameterType="CommentDto">
+        update comment
+        set comment = #{comment}
+        where id = #{id}
+    </update>
+
+    <delete id="Comment_delete" parameterType="Long">
+        delete from comment
+        where id= #{id}
+    </delete>
+
+</mapper>

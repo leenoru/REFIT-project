@@ -1,0 +1,7 @@
+table {
+    border-spacing: 5px;
+}
+table td {
+    width: 30px;
+    background: #e3e3e3;
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+<typeAliases>
+    <typeAlias type="com.refit.project.dto.share.BoardDto" alias="BoardDto"></typeAlias>
+    <typeAlias type="com.refit.project.dto.share.CommentDto" alias="CommentDto"></typeAlias>
+    <typeAlias type="com.refit.project.dto.campaign.CampaignDto" alias="CampaignDto"></typeAlias>
+    <typeAlias type="com.refit.project.dto.member.MemberDTO" alias="member"></typeAlias>
+    <typeAlias type="com.refit.project.dto.collection.BinDto" alias="BinDto"/>
+    <typeAlias type="com.refit.project.dto.company.CompanyDto" alias="CompanyDto"/>
+    <typeAlias type="com.refit.project.dto.banner.BannerDto" alias="BannerDto"/>
+    <typeAlias type="com.refit.project.dto.closet.ClosetDto" alias="ClosetDto"></typeAlias>
+</typeAliases>
+
+</configuration>

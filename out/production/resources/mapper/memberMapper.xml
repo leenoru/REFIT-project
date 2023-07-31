@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member">
+    <insert id="registerEmail" parameterType="member">
+        insert into member(email, password, nickname)
+        values (#{email}, #{password}, #{nickname})
+    </insert>
+    <insert id="registerKakao" parameterType="Map">
+        insert into member(nickname, kakao)
+        values (#{nickname}, #{kakaoId})
+    </insert>
+    <insert id="registerNaver" parameterType="Map">
+        insert into member(nickname, naver)
+        values (#{nickname}, #{naverId})
+    </insert>
+    <insert id="registerGoogle" parameterType="Map">
+        insert into member(nickname, google)
+        values (#{nickname}, #{googleId})
+    </insert>
+    <select id="login" parameterType="member" resultType="member">
+        select * from member where email=#{email}
+    </select>
+    <select id="findAll" resultType="member">
+        select * from member
+    </select>
+    <select id="findById" parameterType="Long" resultType="member">
+        select * from member where id=#{id}
+    </select>
+    <delete id="delete" parameterType="Long">
+        delete from member where id=#{id}
+    </delete>
+    <select id="findByemail" parameterType="String" resultType="member">
+        select * from member where email=#{loginEmail}
+    </select>
+    <update id="modifyNickname" parameterType="Map">
+        update member set nickname=#{nickname} where id=#{id}
+    </update>
+    <update id="modifyPassword" parameterType="Map">
+        update member set password=#{password} where id=#{id}
+    </update>
+    <update id="connectKakao" parameterType="Map">
+        update member set kakao=#{kakao} where id=#{id}
+    </update>
+    <update id="connectNaver" parameterType="Map">
+        update member set naver=#{naver} where id=#{id}
+    </update>
+    <update id="connectGoogle" parameterType="Map">
+        update member set google=#{google} where id=#{id}
+    </update>
+    <select id="getPassword" parameterType="Long" resultType="String">
+        select password from member where id=#{id}
+    </select>
+    <select id="findByKakao" parameterType="String" resultType="member">
+        select * from member where kakao=#{kakao}
+    </select>
+    <select id="findByNaver" parameterType="String" resultType="member">
+        select * from member where naver=#{naver}
+    </select>
+    <select id="findByGoogle" parameterType="String" resultType="member">
+        select * from member where google=#{google}
+    </select>
+</mapper>
+

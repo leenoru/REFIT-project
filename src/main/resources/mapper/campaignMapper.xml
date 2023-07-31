@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="campaign">
+    <!-- id : 모든 mybatis map 파일을 통털어 유일해야 한다.
+    paramerType : 매개변수로 전달할 클래스 명을 지정한다
+    resultType : 쿼리 실행 후에 전달할 객체 클래스명을 지정한다.
+    select 쿼리 실행 후 데이터가 많으면 List<클래스 명>의 데이터를 전달한다.
+    #{변수명}의 경우는 데이터 타입에 따라서 문자일 경우 '' 로 감싸서 출력되고
+    ${변수명}은 그런 처리를 하지 않고 마치 머스터치처럼 데이터가 그냥 출력 된다.
+    $가 유용한 경우도 있다
+    -->
+    <select id="Campaign_List" parameterType="String" resultType="CampaignDto">
+        select
+        *
+        from campaign
+        where campaign_type=#{type}
+        AND campaign_start_date &lt;= NOW()
+        AND campaign_end_date &gt;= NOW()
+        order by campaign_id desc
+    </select>
+
+    <insert id="Campaign_Insert" parameterType="CampaignDto">
+        insert into campaign
+        (
+        campaign_name
+        ,campaign_company
+        ,thumbnail_file
+        ,campaign_contents
+        ,campaign_reward
+        ,campaign_start_date
+        ,campaign_end_date
+        ,conditions
+        ,cloth_subcategory
+        ,created_at
+        ,campaign_type
+        ,campaign_area
+        ,campaign_url
+        )
+        values
+        (
+        #{campaign_name}
+        ,#{campaign_company}
+        ,#{thumbnail_file}
+        ,#{campaign_contents}
+        ,#{campaign_reward}
+        ,#{campaign_start_date}
+        ,#{campaign_end_date}
+        ,#{conditions}
+        ,#{cloth_subcategory}
+        ,now()
+        ,#{campaign_type}
+        ,#{campaign_area}
+        ,#{campaign_url}
+        )
+    </insert>
+
+    <update id ="Campaign_Update" parameterType="CampaignDto">
+        update campaign
+        set campaign_name = #{campaign_name}
+        ,campaign_company=#{campaign_company}
+        ,thumbnail_file=#{thumbnail_file}
+        ,campaign_contents=#{campaign_contents}
+        ,campaign_reward=#{campaign_reward}
+        ,campaign_start_date=#{campaign_start_date}
+        ,campaign_end_date=#{campaign_end_date}
+        ,conditions=#{conditions}
+        ,cloth_subcategory=#{cloth_subcategory}
+        ,campaign_type=#{campaign_type}
+        ,campaign_area=#{campaign_area}
+        ,campaign_url=#{campaign_url}
+        where campaign_id=#{campaign_id}
+    </update>
+
+    <select id="Campaign_View" parameterType="CampaignDto"  resultType="CampaignDto">
+        select
+        campaign_name
+        ,campaign_company
+        ,thumbnail_file
+        ,campaign_contents
+        ,campaign_reward
+        ,campaign_start_date
+        ,campaign_end_date
+        ,conditions
+        ,cloth_subcategory
+        ,campaign_type
+        ,campaign_area
+        ,campaign_url
+        from campaign
+        where campaign_id=#{campaign_id}
+    </select>
+
+    <delete id="Campaign_Delete" parameterType="CampaignDto">
+        delete from campaign
+        where campaign_id=#{campaign_id}
+    </delete>
+
+    <select id="getRewardCampaignByLocation" parameterType="java.lang.String" resultType="CampaignDto">
+        SELECT * FROM campaign
+        WHERE campaign_area
+        LIKE CONCAT('%', #{serviceLocation}, '%')
+        AND campaign_type="profit"
+    </select>
+
+    <select id="getAiCampaignListBySubcategories" parameterType="map" resultType="CampaignDto">
+        select *
+        from campaign
+        where campaign_type = #{type}
+        and <foreach item="item" index="index" collection="clothSubcategories" open="(" separator=" OR " close=")">
+        cloth_subcategory LIKE CONCAT('%', #{item}, '%')
+        </foreach>
+        order by LENGTH(cloth_subcategory) - LENGTH(REPLACE(cloth_subcategory, ',', '')) + 1
+        DESC
+<!--        order by (-->
+<!--        <foreach item="item" index="index" collection="clothSubcategories" separator="+">-->
+<!--            (LENGTH(cloth_subcategory) - LENGTH(REPLACE(cloth_subcategory, #{item}, ''))) / LENGTH(#{item})-->
+<!--        </foreach>-->
+<!--        ) DESC    -->
+    </select>
+<!--    SELECT *-->
+<!--    FROM campaign-->
+<!--    WHERE cloth_subcategory REGEXP '^(?=.*긴팔)|(?=.*긴바지)';-->
+</mapper>

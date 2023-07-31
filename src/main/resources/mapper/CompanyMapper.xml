@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CompanyMapper">
+    <select id="getCompaniesByServiceLocation" parameterType="java.lang.String" resultType="CompanyDto">
+        SELECT * FROM collection_companies WHERE company_service_location LIKE CONCAT('%', #{serviceLocation}, '%');
+    </select>
+    <select id="getCompanies"  resultType="CompanyDto">
+        SELECT * FROM collection_companies;
+    </select>
+</mapper>
+
+
