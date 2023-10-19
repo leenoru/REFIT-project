@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.type.*;
 import com.fasterxml.jackson.databind.*;
 import com.refit.project.dto.member.MemberDTO;
-import com.refit.project.repository.member.MemberRepository;
+import com.refit.project.dao.member.MemberDao;
 import lombok.*;
-import lombok.extern.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.mail.javamail.*;
@@ -45,7 +43,7 @@ public class MemberService {
     private String setFrom; // SMTP sender
 
     private final JavaMailSender mailSender; // 메일 전송
-    private final MemberRepository memberRepository;
+    private final MemberDao memberDao;
     private final RestTemplate restTemplate; // REST 템플릿 객체
     private final PasswordEncoder passwordEncoder; // Spring Security 패스워드 암호화 객체
 
@@ -64,7 +62,7 @@ public class MemberService {
         memberDTO.setKakao(kakao);
         memberDTO.setNaver(naver);
         memberDTO.setGoogle(google);
-        return memberRepository.register(memberDTO);
+        return memberDao.register(memberDTO);
     }
 
     /**
@@ -92,7 +90,7 @@ public class MemberService {
      * @param memberDTO
      */
     public MemberDTO loginByEmail(MemberDTO memberDTO) {
-        MemberDTO member = memberRepository.findByEmail(memberDTO.getEmail());
+        MemberDTO member = memberDao.findByEmail(memberDTO.getEmail());
         if (member != null && passwordEncoder.matches(memberDTO.getPassword(), member.getPassword())) {
             return member;
         } else return null;
@@ -104,7 +102,7 @@ public class MemberService {
      * @param email
      */
     public MemberDTO findByEmail(String email) {
-        return memberRepository.findByEmail(email);
+        return memberDao.findByEmail(email);
     }
 
     /**
@@ -158,7 +156,7 @@ public class MemberService {
      * @return
      */
     public MemberDTO findByKakao(String kakaoId) {
-        MemberDTO memberDTO = memberRepository.findByKakao(kakaoId);
+        MemberDTO memberDTO = memberDao.findByKakao(kakaoId);
         System.out.println(memberDTO);
         return memberDTO;
     }
@@ -208,7 +206,7 @@ public class MemberService {
      * @param naverId
      */
     public MemberDTO findByNaver(String naverId) {
-        return memberRepository.findByNaver(naverId);
+        return memberDao.findByNaver(naverId);
     }
 
     /**
@@ -257,7 +255,7 @@ public class MemberService {
      * @param googleId
      */
     public MemberDTO findByGoogle(String googleId) {
-        return memberRepository.findByGoogle(googleId);
+        return memberDao.findByGoogle(googleId);
     }
 
     /**
@@ -284,7 +282,7 @@ public class MemberService {
      */
     public void tempPassword(String email) {
         String newPassword = generateString(8);
-        memberRepository.modifyPassword(passwordEncoder.encode(newPassword), memberRepository.findByEmail(email).getId());
+        memberDao.modifyPassword(passwordEncoder.encode(newPassword), memberDao.findByEmail(email).getId());
         editPasswordEmail(email, newPassword);
     }
 
@@ -310,7 +308,7 @@ public class MemberService {
      * @param kakaoId
      */
     public void connectKakao(String id, String kakaoId) {
-        memberRepository.connectKakao(id, kakaoId);
+        memberDao.connectKakao(id, kakaoId);
     }
 
     /**
@@ -320,7 +318,7 @@ public class MemberService {
      * @param naverId
      */
     public void connectNaver(String id, String naverId) {
-        memberRepository.connectNaver(id, naverId);
+        memberDao.connectNaver(id, naverId);
     }
 
     /**
@@ -330,7 +328,7 @@ public class MemberService {
      * @param googleId
      */
     public void connectGoogle(String state, String googleId) {
-        memberRepository.connectGoogle(state, googleId);
+        memberDao.connectGoogle(state, googleId);
     }
 
 
@@ -343,7 +341,7 @@ public class MemberService {
      * @param id
      */
     public void modifyNickname(String nickname, String id) {
-        memberRepository.modifyNickname(nickname, id);
+        memberDao.modifyNickname(nickname, id);
     }
 
     /**
@@ -353,7 +351,7 @@ public class MemberService {
      * @param id
      */
     public void modifyPassword(String password, String id) {
-        memberRepository.modifyPassword(passwordEncoder.encode(password), Integer.parseInt(id));
+        memberDao.modifyPassword(passwordEncoder.encode(password), Integer.parseInt(id));
     }
 
     /**
@@ -362,7 +360,7 @@ public class MemberService {
      * @param id
      */
     public void quit(Long id) {
-        memberRepository.delete(id);
+        memberDao.delete(id);
         // 미구현: DB closet table 유저의 옷장 엔터티들 제거
         // 미구현: 로컬 스토리지에 이미지들도 같이 제거
     }
@@ -376,7 +374,7 @@ public class MemberService {
      * @param password
      */
     public boolean passwordCheck(String id, String password) {
-        return passwordEncoder.matches(password, memberRepository.getPassword(id));
+        return passwordEncoder.matches(password, memberDao.getPassword(id));
     }
 
     @Data

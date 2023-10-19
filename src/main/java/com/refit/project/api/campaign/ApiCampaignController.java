@@ -37,10 +37,9 @@ public class ApiCampaignController {
     private ClosetService closetService;
     private ClosetDto closetDto;
 
-    //컨트롤러가 JSP를 refresh하거나 다른 JSP로 이동하지 않고 결과를 리턴함
+    //ResponseBody 컨트롤러가 JSP를 refresh하거나 다른 JSP로 이동하지 않고 결과를 리턴함
     @ResponseBody
-    //url:webcamControl POST 방식 요청만 실행
-    //랜덤한 마스크 위치를 리턴 할 컨트롤러
+    //url : POST 방식 요청만 실행
     @RequestMapping(value = "/doMatching", method = {RequestMethod.POST})
 
     //JSON 형태의 문자열을 리턴 할 것이므로 리턴 타입은 String

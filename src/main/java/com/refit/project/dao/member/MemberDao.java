@@ -1,4 +1,4 @@
-package com.refit.project.repository.member;
+package com.refit.project.dao.member;
 
 import com.refit.project.dto.member.MemberDTO;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberRepository {
+public class MemberDao {
     private final SqlSessionTemplate sql;
 
     /**

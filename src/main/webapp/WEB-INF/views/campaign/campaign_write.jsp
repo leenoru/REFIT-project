@@ -350,11 +350,14 @@ function callsend(url) {
 
 <script>
     window.addEventListener('DOMContentLoaded', () => {
+        // 업로드한 썸네일
         const thumbnailFileInput = document.getElementById('inputThumbnailFile');
+        // 업로드한 썸네일 미리보기
         const thumbnailPreview = document.getElementById('thumbnailPreview');
+        // 이전에 등록한 썸네일
         const existingThumbnailWrapper = document.getElementById('existingThumbnailWrapper');
 
-        // 이전에 등록한 파일의 경로가 있는 경우, 미리보기 이미지를 표시합니다.
+        // 이전에 등록한 파일의 경로가 있는 경우, 미리보기 이미지를 표시
         if ("${writeDto.thumbnail_file}" !== "") {
             const existingImage = document.createElement('img');
             existingImage.src = "${writeDto.thumbnail_file}";

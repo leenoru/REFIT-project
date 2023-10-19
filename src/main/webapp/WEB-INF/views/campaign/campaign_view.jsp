@@ -57,43 +57,26 @@
 
 
 <script>
+// 수정하기
 $( document ).ready(function() {
     $("#btnModify").on("click",function(){
       $("#campaignForm").attr("action","<%=request.getContextPath()%>/campaign/modify");
-      $("#campaignForm").submit();
+      $("#campaignForm").submit(); //post
     });
 
+    // 삭제하기
     $("#btnDelete").on("click",function(){
+      if (confirm("삭제하시겠습니까?")) {
         $("#campaignForm").attr("action","<%=request.getContextPath()%>/campaign/delete");
-        $("#campaignForm").submit();
+        $("#campaignForm").submit(); //post
         alert("삭제되었습니다");
-    });
-});
-
-
-<%--
-$("#btnDelete").click(() => {
-  if (confirm("삭제하시겠습니까?")) {
-    $.ajax({
-      url: "<%=request.getContextPath()%>/campaign/delete",
-      type: "POST",
-      data: $("#myform").serialize(),
-      success: function (response) {
-        alert("삭제 성공했습니다.");
-        window.location.href = "<%=request.getContextPath()%>/campain";
-      },
-      error: function (xhr, status, error) {
-        alert("삭제 실패했습니다.");
-        console.log(xhr.responseText);
       }
     });
-  }
 });
 
---%>
-
+// 공유하기 버튼
 function clip(){
-        var url = '';    // <a>태그에서 호출한 함수인 clip 생성
+        var url = '';    // button 태그에서 호출한 함수인 clip() 생성
         var textarea = document.createElement("textarea");
         //url 변수 생성 후, textarea라는 변수에 textarea의 요소를 생성
         document.body.appendChild(textarea); //</body> 바로 위에 textarea를 추가(임시 공간이라 위치는 상관 없음)
@@ -101,7 +84,7 @@ function clip(){
         textarea.value = url;  // textarea 값에 url를 넣어줌
         textarea.select();  //textarea를 설정
         document.execCommand("copy");   // 복사
-        document.body.removeChild(textarea); //extarea 요소를 없애줌
+        document.body.removeChild(textarea); // textarea 요소를 없애줌
         alert("링크가 복사되었어요! 이제 널리 알려주세요😊")  // 알림창
     }
 </script>
