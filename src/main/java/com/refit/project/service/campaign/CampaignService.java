@@ -1,19 +1,17 @@
 package com.refit.project.service.campaign;
 
 import com.refit.project.dao.campaign.CampaignDao;
-import com.refit.project.dao.company.CompanyDao;
 import com.refit.project.dto.campaign.CampaignDto;
-import com.refit.project.dto.company.CompanyDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service("campaignService")
+@RequiredArgsConstructor // Service라는 빈이 생성될때 final로 선언된 필드(CampaignDao)를 스프링이 알아서 주입해 줌
 public class CampaignService {
 
-    @Autowired
-    CampaignDao campaignDao;
+    private final CampaignDao campaignDao;
 
     // 캠페인 리스트 조회
     public List<CampaignDto> getCampaignList(String type) {
@@ -25,7 +23,7 @@ public class CampaignService {
         return campaignDao.getCampaignView(dto);
     }
 
-    // 캠페인 추가
+    // 캠페인 추가 등록
     public void campaignInsert(CampaignDto dto) {
         campaignDao.campaignInsert(dto);
     }
@@ -45,7 +43,7 @@ public class CampaignService {
         return campaignDao.getRewardCampaignList(serviceLocation);
     }
 
-    //AI 매칭완료 페이지
+    // AI 매칭완료 캠페인 리스트 조회
     public List<CampaignDto> getAiCampaignListBySubcategories(String type, List<String> clothingSubcategories) {
         System.out.println(type);
         System.out.println(clothingSubcategories);
