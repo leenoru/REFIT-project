@@ -60,6 +60,7 @@
 // 수정하기
 $( document ).ready(function() {
     $("#btnModify").on("click",function(){
+      //.attr()를 이용하여 campaignForm 요소의 action 속성을 /campaign/modify로 변경
       $("#campaignForm").attr("action","<%=request.getContextPath()%>/campaign/modify");
       $("#campaignForm").submit(); //post
     });

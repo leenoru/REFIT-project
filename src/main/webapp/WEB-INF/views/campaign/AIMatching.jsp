@@ -105,7 +105,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-let subCategories = ""; // subCategories 변수를 전역 변수로 선언합니다.
+let subCategories = ""; // subCategories 변수를 전역 변수로 선언
 
   function getImageFiles(e) {
     const placeholderText = document.querySelector(".placeholder-text");
