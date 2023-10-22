@@ -162,13 +162,14 @@
 
 <!-- slide JS-->
 <script>
+    // .autoplay 클래스를 가진 요소에 slick 슬라이더를 적용
     $(document).ready(function() {
         $('.autoplay').slick({
-            infinite: false,
+            infinite: false, //슬라이더가 끝에 도달하면 다시 시작할지 여부
             slidesToShow: 1, // 한 번에 표시할 슬라이드 수
-            slidesToScroll: 1,
-            autoplay: false,
-            variableWidth: true
+            slidesToScroll: 1, // 한 번에 스크롤할 슬라이드 수
+            autoplay: false, // 슬라이더가 자동으로 재생될지 여부를 설정
+            variableWidth: true // 각 슬라이드의 너비가 다를 수 있도록 설정
         });
     });
 </script>

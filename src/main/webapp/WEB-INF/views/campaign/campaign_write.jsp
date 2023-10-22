@@ -279,16 +279,16 @@
 
             // callbacks : Summernote의 콜백함수를 설정하는 부분(콜백 함수 : 다른 함수의 인수로 전달되는 함수, 비동기 처리 위함)
             callbacks : {
-                // onImageUpload는 이미지 업로드가 완료된 후 호출되는 콜백 함수
+                // onImageUpload : 이미지 업로드가 완료된 후 호출되는 써머노트 콜백 함수
                 // files : 업로드된 파일 배열, editor : Summernote 객체, welEditable : 편집 요소
             	onImageUpload : function(files, editor, welEditable) {
-            // 파일 업로드(다중업로드를 위해 반복문 사용)
-            // files.length - 1은 업로드된 파일의 수, i--는 i를 1씩 감소
-            for (var i = files.length - 1; i >= 0; i--) {
-            // uploadSummernoteImageFile() 업로드된 파일을 Summernote에 삽입하는 함수
-            // files[i]: 업로드된 파일 중 i번째 파일, this는 현재 실행 중인 함수의 객체(onImageUpload())
-            // this를 사용하면, 현재 실행 중인 함수의 인수와 변수에 접근 가능
-            uploadSummernoteImageFile(files[i], this);
+                    // 파일 업로드(다중업로드를 위해 반복문 사용)
+                    // files.length - 1은 업로드된 파일의 수, i--는 i를 1씩 감소
+                    for (var i = files.length - 1; i >= 0; i--) {
+                    // uploadSummernoteImageFile() 업로드된 파일을 Summernote에 삽입하는 함수
+                    // files[i]: 업로드된 파일 중 i번째 파일, this는 현재 실행 중인 함수의 객체(onImageUpload())
+                    // this를 사용하면, 현재 실행 중인 함수의 인수와 변수에 접근 가능
+                    uploadSummernoteImageFile(files[i], this);
             		}
             	},
             },
@@ -298,8 +298,7 @@
     // file : 업로드된 파일, el : Summernote 객체
     // 이미지 업로드 함수와 ajax 활용
     function uploadSummernoteImageFile(file, el) {
-            // data : 업로드할 파일의 데이터를 저장하는 객체
-            // FormData 객체는 비동기적으로 파일을 전송할 수 있음
+            // data : 업로드할 파일의 데이터를 저장하는 객체(FormData 객체는 비동기적으로 파일을 전송할 수 있음)
 			data = new FormData();
 			// 파일 이름과 파일데이터를 data에 추가
 			data.append("file", file);
@@ -307,7 +306,7 @@
 				data : data, // 업로드할 파일 데이터
 				type : "POST", // HTTP 유형 설정(업로드이므로 POST)
 				url : "<%=request.getContextPath()%>/uploadSummernoteImageFile", //업로드 작업을 수행할 URL
-				contentType : false, // HTTP 요청의 콘텐츠 유형, enctype의 속성 값 multipart/form-data를 따라감
+				contentType : false, // HTTP 요청의 콘텐츠 유형, false해도 enctype의 속성 값 multipart/form-data를 따라감
 				enctype : 'multipart/form-data', // HTTP 요청의 콘텐츠 유형, multipart/form-data는 파일 업로드를 위한 콘텐츠유형
 				processData : false, //HTTP 요청의 데이터를 처리할지 여부를 설정, false를 설정하여 data에 직접 파일 데이터를 전달
 				success : function(data) { // success : 요청이 성공적으로 완료된 후 호출되는 콜백 함수
@@ -390,7 +389,7 @@ function callsend(url) {
         // 파일 업로드 시, 선택한 파일의 미리보기 이미지를 표시(FileReader 객체 활용)
         thumbnailFileInput.addEventListener('change', (event) => {
 
-            // 업로드한 파일을 가져오기
+            // 업로드한 파일 가져오기
             const selectedFile = event.target.files[0];
 
             // 파일의 내용을 읽을 수 있는 FileReader 객체를 생성
@@ -402,12 +401,12 @@ function callsend(url) {
                 previewImage.src = event.target.result;
                 previewImage.alt = "이전 썸네일이 삭제되어 등록이 필요합니다!";
 
-                // 기존 미리보기 이미지와 교체합니다.
+                // 기존 미리보기 이미지와 교체
                 thumbnailPreview.innerHTML = '';
                 thumbnailPreview.appendChild(previewImage);
             };
 
-            // FileReader를 사용하여 파일을 읽고, 미리보기 이미지를 생성합니다.
+            // FileReader를 사용하여 파일을 읽고, 미리보기 이미지를 생성
             reader.readAsDataURL(selectedFile);
         });
     });
