@@ -104,7 +104,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-  let subCategories = ""; // subCategories 변수(AI가 예측한 카테고리)를 전역 변수로 선언
+  let subCategories = ""; // subCategories 변수(AI가 예측한 카테고리)
 
   // upload 요소에 값이 변경될 때 발생하는 이벤트로 getImageFiles() 함수를 호출
   document.getElementById("upload").addEventListener("change", getImageFiles);
@@ -141,7 +141,7 @@
       // 이미지 파일이면 promises 배열에 추가(loadImage() 함수의 결과를 promises 배열에 추가)
       promises.push(loadImage(reader, file));
 
-      // reader 객체를 사용하여 파일을 읽음
+      // reader 객체를 사용하여 파일을 읽음(파일의 내용을 Base64로 인코딩한 문자열을 result 속성에 저장)
       reader.readAsDataURL(file);
     });
 
@@ -153,8 +153,6 @@
       initSlickSlider();
       // 서브 카테고리 정보를 가져오는 함수
       subCategory();
-      // 슬라이더를 초기화
-      initSlickSlider();
     });
   }
 
@@ -187,6 +185,7 @@
     const img = document.createElement("img");
     img.className = "card-img-top";
     // e.target.result : FileReader 객체의 onload 이벤트(e)에서 요소(target)의 파일 내용을 Base64 인코딩된 형태(result)로 얻음
+    // FileReader객체의 readAsDataURL() 메서드를 사용 이미지 파일을 읽으면 파일의 내용을 Base64로 인코딩한 문자열을 result 속성에 저장
     img.src = e.target.result;
     img.alt = "Uploaded Image";
     img.style.maxWidth = "200px";
@@ -234,6 +233,7 @@
     });
   }
 
+  // 플라스크 서버와 통신을 통한 AI 카테고리 매칭
   function subCategory (event) {
       alert("💘 매칭 시작! 잠시만 기다려주세요");
       subCategories = ""; // 카테고리 소분류가 담길 변수

@@ -21,11 +21,20 @@ public class AIController {
 
     private final CampaignService campaignService;
 
+    /**
+     * AI 매칭 시작 페이지
+     * @return AI 매칭 시작 페이지, 이미지 업로드를 위한 페이지(view)로 이동
+     */
     @RequestMapping(value="/campaign/AI" , method = {RequestMethod.GET, RequestMethod.POST})
     public String aiMatching() {
         return "campaign/AIMatching";
     }
 
+    /**
+     * AI 매칭 결과 페이지
+     * @param subCategories 플라스크서버 AI로 부터 매칭 완료된 서브카테고리 ex) 상의,하의
+     * @return AI 매칭 결과를 보여주는 페이지(view)로 이동
+     */
     @RequestMapping(value = "/campaign/AI/doMatching", method = RequestMethod.GET)
     public String aiDoMatching(Model model, @RequestParam String subCategories) {
 
