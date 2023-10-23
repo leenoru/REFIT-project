@@ -24,7 +24,11 @@ public class CampaignController {
 
     private final CampaignService campaignService;
 
-    // 리워드형 캠페인 리스트 조회
+    /**
+     * 리워드형 캠페인 리스트 조회
+     * @param model 리워드형 캠페인 정보를 저장할 모델
+     * @return 리워드형 캠페인 리스트 페이지 view 반환
+     */
     @RequestMapping("/campaign/reward") //(<=>@GetMapping)
     public String getRewardCampaign(Model model) {    //Model : 뷰에 데이터를 전달하는 데 사용되는 객체
         List<CampaignDto> rewardList = campaignService.getCampaignList("reward");
@@ -34,7 +38,11 @@ public class CampaignController {
         return "campaign/reward_list"; // view로 응답 전달
     }
 
-    // 기부형 캠페인 리스트 조회
+    /**
+     * 기부형 캠페인 리스트 조회
+     * @param model 기부형 캠페인 정보를 저장할 모델
+     * @return 기부형 캠페인 리스트 페이지 view 반환
+     */
     @RequestMapping("/campaign/donation")
     public String getDonationCampaign(Model model) {
         List<CampaignDto> donationList = campaignService.getCampaignList("donation");
@@ -43,7 +51,11 @@ public class CampaignController {
         return "campaign/donation_list";
     }
 
-    // 수익형 캠페인 리스트 조회
+    /**
+     * 수익형 캠페인 리스트 조회
+     * @param model 수익형 캠페인 정보를 저장할 모델
+     * @return 수익형 캠페인 리스트 페이지 view 반환
+     */
     @RequestMapping("/campaign/profit")
     public String getProfitCampaign(Model model) {
         List<CampaignDto> profitList = campaignService.getCampaignList("profit");
@@ -52,7 +64,13 @@ public class CampaignController {
         return "campaign/donation_list";
     }
 
-    // 캠페인 상세페이지 조회
+    /**
+     * 캠페인 상세 페이지 조회
+     * @param campaign_id 조회할 캠페인 ID
+     * @param model 캠페인 정보를 저장할 모델
+     * @param dto 캠페인 정보를 담고 있는 dto
+     * @return 캠페인 상세 페이지 view 반환
+     */
     @RequestMapping("/campaign/{campaign_id}")
     public String campaign_view(@PathVariable("campaign_id")int campaign_id, Model model, CampaignDto dto)
     {
@@ -62,19 +80,30 @@ public class CampaignController {
         return "campaign/campaign_view";
     }
 
-    // 캠페인 추가 등록
+    /**
+     * 캠페인 추가 등록
+     * @param model 캠페인 정보를 저장할 모델
+     * @param campaignDto 캠페인 정보를 담고 있는 dto
+     * @return 캠페인 작성 페이지 반환
+     */
     @RequestMapping("/campaign/write")
     public String campaign_write(Model model, CampaignDto campaignDto) {
         model.addAttribute("writeDto", new CampaignDto());
         return "campaign/campaign_write";
     }
 
-    // 캠페인 추가 등록 시 파일 업로드 및 내용 등록
-    /** MultipartHttpServletRequest는 Multipart/'form'-data로 전송된 요청을 처리하는 데 사용되는 인터페이스
-        Multipart/form-data는 '파일' 업로드와 함께 '텍스트 데이터'를 전송할 때 사용되는 HTTP 요청 방식으로
-        Multipart/form-data로 전송된 데이터는 HTTP 요청 본문에 포함됨
-        MultipartHttpServletRequest는 HTTP 요청 본문에 포함된 데이터를 추출하여 처리할 수 있는 인터페이스
-        아래 코드에서는 getFile() 메서드를 사용하여 inputThumbnailFile 이름의 파일을 가져옴 */
+    /**
+     * 캠페인 추가 등록 및 파일 업로드
+     * MultipartHttpServletRequest는 Multipart/'form'-data로 전송된 요청을 처리하는 데 사용되는 인터페이스
+       MultipartHttpServletRequest는 HTTP 요청 본문에 포함된 데이터를 추출하여 처리
+       Multipart/form-data는 '파일' 업로드와 함께 '텍스트 데이터'를 전송할 때 사용되는 HTTP 요청 방식
+       Multipart/form-data로 전송된 데이터는 HTTP 요청 본문에 포함됨
+       아래 코드에서는 getFile() 메서드를 사용하여 inputThumbnailFile 이름의 파일을 가져옴
+     * @param multi 캠페인 이미지 파일을 포함하는 multipart 요청
+     * @param dto 캠페인 정보를 담고 있는 dto
+     * @param request HTTP 요청
+     * @return 캠페인 등록 완료 result : success 값이 담긴 jsonObject 반환
+     */
     @RequestMapping(value = "/campaign/save", produces = "application/json; charset=UTF-8")
     @ResponseBody // 다른 페이지로 이동하지 않고 응답처리
     String save(MultipartHttpServletRequest multi, CampaignDto dto, HttpServletRequest request)
@@ -124,13 +153,18 @@ public class CampaignController {
         campaignService.campaignInsert(dto);
 
         // 캠페인 등록 성공 응답 반환
-        //ajax로 호출해서 파일 저장하고 DB에 저장까지 모든 과정
+        // ajax로 호출해서 파일 저장하고 DB에 저장까지 모든 과정
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", "success");
         return jsonObject.toString();
     }
 
-    // 캠페인 수정
+    /**
+     * 캠페인 수정
+     * @param model 수정될 캠페인 내용이 담길 model
+     * @param campaign_id 수정될 캠페인 ID
+     * @return 캠페인 수정 페이지 반환
+     */
     @RequestMapping("/campaign/modify")
     String campaign_modify(Model model, Integer campaign_id)
     {
@@ -142,7 +176,12 @@ public class CampaignController {
         return "campaign/campaign_write";
     }
 
-    // 캠페인 수정 등록 (캠페인 추가 등록 시 파일 업로드 및 내용 등록과 동일)
+    /** 캠페인 수정 등록 (캠페인 추가 등록 시 파일 업로드 및 내용 등록과 동일)     *
+     * @param multi 캠페인 이미지 파일을 포함하는 multipart
+     * @param dto 캠페인 정보를 담고 있는 dto
+     * @param request HTTP 요청
+     * @return 캠페인 등록 완료 result : success 값이 담긴 jsonObject 반환
+     */
     @RequestMapping(value = "/campaign/update", produces = "application/json; charset=UTF-8")
     @ResponseBody
     String campaign_update(MultipartHttpServletRequest multi, CampaignDto dto, HttpServletRequest request) {
@@ -177,7 +216,13 @@ public class CampaignController {
         map.put("result", "success");
         return map.toString(); //ajax로 호출해서 파일 저장하고 DB에 저장까지
     }
-
+    /**
+     * 캠페인 삭제
+     * @param campaign_id 삭제할 캠페인의 ID
+     * @param dto 캠페인 정보를 담고 있는 dto
+     * @param campaign_type 캠페인의 유형
+     * @return 해당 캠페인 유형의 목록 페이지 반환
+     */
     @RequestMapping("/campaign/delete")
     public String campaign_delete(@RequestParam("campaign_id")Integer campaign_id, CampaignDto dto, @RequestParam("campaign_type") String campaign_type) {
         dto.setCampaign_id(campaign_id);

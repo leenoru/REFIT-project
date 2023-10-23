@@ -15,6 +15,7 @@ import java.util.Map;
 public class BoardDao {
 
     private final SqlSessionTemplate sm; //mybatis 객체
+
     public List<BoardDto> getMainList(){
         List<BoardDto> MainList = sm.selectList("Board_GetMainList");
         System.out.println("db에 갔다 왔습니다.");

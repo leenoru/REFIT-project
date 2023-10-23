@@ -20,8 +20,13 @@ import java.util.Date;
 @Controller
 @RequiredArgsConstructor
 public class CampaignSummernoteController {
-    // 써머노트는 이미지 파일을 업로드할 때 onImageUpload() 콜백 함수를 사용
-    // onImageUpload() 콜백 함수, 업로드 이미지 파일의 정보를 JSON 객체로 반환(url, responseCode 등)
+    /**
+     * Summernote 이미지 파일 업로드
+     * @param file 업로드할 Summernote 이미지 파일
+     * @param request HTTP 요청
+     * @param dto 캠페인 정보를 담고 있는 dto
+     * @return 업로드 이미지 파일의 정보를 JSON 객체로 반환(파일 경로 url, 응답 responseCode 등)
+     */
     @RequestMapping(value = "/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
     @ResponseBody
     public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, CampaignDto dto) {
@@ -66,6 +71,8 @@ public class CampaignSummernoteController {
             e.printStackTrace();
         }
         // JSON 객체를 문자열로 변환 및 반환(클라이언트에서 JSON 문자열을 파싱하여 처리 위함)
+        // 써머노트는 이미지 파일을 업로드할 때 onImageUpload() 콜백 함수를 사용
+        // 자바스크립트의 onImageUpload() 콜백 함수로 업로드 이미지 파일의 정보를 JSON 객체로 반환(url, responseCode 등)
         String data = jsonObject.toString();
         return data;
     }

@@ -19,11 +19,14 @@ public class MainController {
 
     private final BoardService boardService;
 
+    /**
+     * 메인 페이지 나눔 게시판 영역
+     * @param model 나눔 게시글 정보 담길 model
+     * @return 메인 페이지 view
+     * */
     @GetMapping("/")
     public String main(Model model) {
-
         List<BoardDto> MainShareList = boardService.getMainList();
-
         model.addAttribute("MainShareList", MainShareList);
         return "main";
     }

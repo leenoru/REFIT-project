@@ -38,11 +38,15 @@ public class ApiCampaignController {
     private ClosetService closetService;
     private ClosetDto closetDto;
 
-    //ResponseBody 컨트롤러가 JSP를 refresh하거나 다른 JSP로 이동하지 않고 결과를 리턴함
-    @ResponseBody
+    /**
+     * doMatching() : 의류 분류 AI 플라스크 서버와 백엔드 서버 간 통신 메서드
+     * @param data  : FileReader를 통해 base64로 인코딩된 의류 이미지 데이터(data : image/jpeg;base64,[이미지 데이터])
+     * @param request : HTTP 요청
+     * @return AI 매칭 결과 대분류와 소분류 결과 값 반환
+     */
+    @ResponseBody //ResponseBody 컨트롤러가 JSP를 refresh하거나 다른 JSP로 이동하지 않고 결과를 리턴함
     //url : POST 방식 요청만 실행
     @RequestMapping(value = "/doMatching", method = {RequestMethod.POST})
-
     //JSON 형태의 문자열을 리턴 할 것이므로 리턴 타입은 String
     //@RequestBody String img_data : 파일 내용과 같이 큰 사이즈의 데이터를 저장할 변수
     public String doMatching(@RequestBody String data, HttpServletRequest request) throws Exception {
