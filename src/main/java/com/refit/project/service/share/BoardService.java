@@ -49,10 +49,15 @@ public class BoardService {
 
     }
 
+    /**
+     * 페이징 처리에 필요한 정보를 계산
+     * @param page 현재 페이지 번호
+     * @return 페이징 처리에 필요한 정보가 담긴 객체
+     */
     public PageDto pagingParam(int page) {
         // 전체 글 갯수 조회
         int boardCount = boardDao.boardCount();
-        // 전체 페이지 갯수 계산(10/3=3.33333 => 4)
+        // 전체 페이지 갯수 계산(10/3=3.33333 => 4), Math.ceil() 실수의 올림값 계산
         int maxPage = (int) (Math.ceil((double) boardCount / pageLimit));
         // 시작 페이지 값 계산(1, 4, 7, 10, ~~~~)
         int startPage = (((int)(Math.ceil((double) page / blockLimit))) - 1) * blockLimit + 1;

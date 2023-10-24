@@ -17,11 +17,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShareController {
 
-
     private final BoardService boardService;
     private final CommentService commentService;
 
-
+    /**
+     * 나눔 게시판 게시글 리스트 페이지
+     * @param model 나눔 게시판 게시글 리스트 및 페이지 정보를 담을 모델
+     * @param page 요청한 게시판 페이지 번호, 없을 경우(메인 혹은 첫번째) 1이 기본 값
+     * @return 나눔 게시판 게시글 리스트 페이지 반환
+     */
     @GetMapping("/share/index")
     public String getList(Model model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         List<BoardDto> pagingList = boardService.getList(page);
@@ -29,7 +33,7 @@ public class ShareController {
 
         model.addAttribute("dtoList", pagingList);
         model.addAttribute("paging", pageDto);
-        return "share-index";
+        return "share/share-index";
     }
 
     @GetMapping("/share/index/search")

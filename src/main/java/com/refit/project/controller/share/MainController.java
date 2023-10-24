@@ -1,18 +1,17 @@
 package com.refit.project.controller.share;
 
-import com.refit.project.dto.campaign.CampaignDto;
 import com.refit.project.dto.share.BoardDto;
-import com.refit.project.dto.share.PageDto;
-import com.refit.project.service.campaign.CampaignService;
 import com.refit.project.service.share.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 메인 페이지 컨트롤러
+ */
 @Controller
 @RequiredArgsConstructor
 public class MainController {
@@ -23,7 +22,7 @@ public class MainController {
      * 메인 페이지 나눔 게시판 영역
      * @param model 나눔 게시글 정보 담길 model
      * @return 메인 페이지 view
-     * */
+     */
     @GetMapping("/")
     public String main(Model model) {
         List<BoardDto> MainShareList = boardService.getMainList();
@@ -31,6 +30,10 @@ public class MainController {
         return "main";
     }
 
+    /**
+     * 의류 수거함 지도 영역
+     * @return 의류 수거함 view
+     */
     @GetMapping("/collection")
     public String collection() {
         return "collection";
